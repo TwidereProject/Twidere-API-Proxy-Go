@@ -10,11 +10,18 @@ import (
 	"strings"
 )
 
-const DOMAIN_FORMAT_PREFIX = "/domain."
+var DOMAIN_FORMAT_PREFIX = "/domain."
 
 func main() {
 	http.HandleFunc("/", handleRequest)
-	bind := fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT"))
+	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
+	host, port := os.Getenv("HOST"), os.Getenv("PORT")
+	var bind string
+	if host == "" || port == "" {
+		bind = fmt.Sprintf("%s:%s", "127.0.0.1", "18080")
+	} else {
+		bind = fmt.Sprintf("%s:%s", host, port)
+	}
 	err := http.ListenAndServe(bind, nil)
 	if err != nil {
 		panic(err)
@@ -22,8 +29,8 @@ func main() {
 }
 
 func handleRequest(res http.ResponseWriter, req *http.Request) {
-	uri := req.RequestURI
-	if uri == "/" {
+	url, uri := req.URL, req.RequestURI
+	if url.Path == "/" {
 		handleWelcome(res, req)
 	} else if strings.HasPrefix(uri, DOMAIN_FORMAT_PREFIX) {
 		regulatedUri := uri[len(DOMAIN_FORMAT_PREFIX):]
@@ -48,36 +55,27 @@ func handleTwitterRequest(res http.ResponseWriter, req *http.Request, domain str
 	}
 	twitterReq, err := http.NewRequest(req.Method, twitterUri, req.Body)
 	if err != nil {
-
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
 	}
-	for k, vs := range req.Header {
-		for _, v := range vs {
-			twitterReq.Header.Add(k, v)
-		}
-	}
+	copyHeader(req.Header, twitterReq.Header)
 	twitterRes, err := client.Do(twitterReq)
 	if err != nil {
-
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
 	}
-	resHeader := res.Header()
-	for k, vs := range twitterRes.Header {
-		for _, v := range vs {
-			resHeader.Add(k, v)
-		}
-	}
+	copyHeader(twitterRes.Header, res.Header())
 	res.WriteHeader(twitterRes.StatusCode)
 	io.Copy(res, twitterRes.Body)
 }
 
 func handleUnimplementedRequest(res http.ResponseWriter, req *http.Request) {
-	res.WriteHeader(501)
-	header := res.Header()
-	header.Set("Content-Type", "text/plain")
-	fmt.Fprintf(res, "Not implemented\n")
+	errMessage := fmt.Sprintf("Unable to handle: %s, not implemented.", req.URL.Path)
+	http.Error(res, errMessage, http.StatusNotImplemented)
 }
 
 func handleWelcome(res http.ResponseWriter, req *http.Request) {
-	info := WelcomeInfo{"0.9"}
+	info := WelcomeInfo{"Twidere API Proxy", "0.9", req.Host}
 	fp := path.Join("templates", "welcome.html")
 	tmpl, err := template.ParseFiles(fp)
 	if err != nil {
@@ -90,6 +88,16 @@ func handleWelcome(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
+func copyHeader(in http.Header, out http.Header) {
+	for k, vs := range in {
+		for _, v := range vs {
+			out.Add(k, v)
+		}
+	}
+}
+
 type WelcomeInfo struct {
+	Name    string
 	Version string
+	Host    string
 }

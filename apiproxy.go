@@ -58,13 +58,30 @@ func handleTwitterRequest(res http.ResponseWriter, req *http.Request, domain str
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	copyHeader(req.Header, twitterReq.Header)
+	reqHeader := req.Header
+	copyHeader(reqHeader, twitterReq.Header)
+	reqHeader.Del("Cookie")
+	cookieDomain := fmt.Sprintf(".%s", req.Host)
+	for _, v := range req.Cookies() {
+		if strings.EqualFold(v.Domain, cookieDomain) {
+			v.Domain = ".twitter.com"
+		}
+		reqHeader.Add("Cookie", v.String())
+	}
 	twitterRes, err := client.Do(twitterReq)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	resHeader := res.Header()
 	copyHeader(twitterRes.Header, res.Header())
+	resHeader.Del("Set-Cookie")
+	for _, v := range twitterRes.Cookies() {
+		if strings.EqualFold(v.Domain, ".twitter.com") {
+			v.Domain = cookieDomain
+		}
+		resHeader.Add("Set-Cookie", v.String())
+	}
 	res.WriteHeader(twitterRes.StatusCode)
 	io.Copy(res, twitterRes.Body)
 }

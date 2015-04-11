@@ -1,5 +1,5 @@
 # Twidere-API-Proxy-Go
-Yet another Twitter API proxy written in Go language, supports
+Yet another Twitter API proxy written in Go language
 
 ----
 

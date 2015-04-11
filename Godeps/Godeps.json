@@ -1,0 +1,5 @@
+{
+	"ImportPath": "Twidere-API-Proxy-Go",
+	"GoVersion": "go1.4.1",
+	"Deps": []
+}

@@ -76,7 +76,7 @@
             <!--
             var port = window.location.port
             var apiPrefix
-            if (port != 80 && port != 443) {
+            if (port && port != 80 && port != 443) {
               apiPrefix = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port
             } else {
               apiPrefix = window.location.protocol + '//' + window.location.hostname

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"html/template"
 	"io"
@@ -8,6 +9,7 @@ import (
 	"os"
 	"path"
 	"strings"
+	"time"
 )
 
 var DOMAIN_FORMAT_PREFIX = "/domain."
@@ -66,7 +68,7 @@ func handleTwitterRequest(res http.ResponseWriter, req *http.Request, domain str
 		if strings.EqualFold(v.Domain, cookieDomain) {
 			v.Domain = ".twitter.com"
 		}
-		reqHeader.Add("Cookie", v.String())
+		reqHeader.Add("Cookie", cookieToString(v))
 	}
 	twitterRes, err := client.Do(twitterReq)
 	if err != nil {
@@ -80,7 +82,7 @@ func handleTwitterRequest(res http.ResponseWriter, req *http.Request, domain str
 		if strings.EqualFold(v.Domain, ".twitter.com") {
 			v.Domain = cookieDomain
 		}
-		resHeader.Add("Set-Cookie", v.String())
+		resHeader.Add("Set-Cookie", cookieToString(v))
 	}
 	res.WriteHeader(twitterRes.StatusCode)
 	io.Copy(res, twitterRes.Body)
@@ -111,6 +113,32 @@ func copyHeader(in http.Header, out http.Header) {
 			out.Add(k, v)
 		}
 	}
+}
+
+func cookieToString(c *http.Cookie) string {
+	var b bytes.Buffer
+	fmt.Fprintf(&b, "%s=%s", c.Name, c.Value)
+	if len(c.Path) > 0 {
+		fmt.Fprintf(&b, "; Path=%s", c.Path)
+	}
+	if len(c.Domain) > 0 {
+		fmt.Fprintf(&b, "; Domain=%s", c.Domain)
+	}
+	if c.Expires.Unix() > 0 {
+		fmt.Fprintf(&b, "; Expires=%s", c.Expires.UTC().Format(time.RFC1123))
+	}
+	if c.MaxAge > 0 {
+		fmt.Fprintf(&b, "; Max-Age=%d", c.MaxAge)
+	} else if c.MaxAge < 0 {
+		fmt.Fprintf(&b, "; Max-Age=0")
+	}
+	if c.HttpOnly {
+		fmt.Fprintf(&b, "; HttpOnly")
+	}
+	if c.Secure {
+		fmt.Fprintf(&b, "; Secure")
+	}
+	return b.String()
 }
 
 type WelcomeInfo struct {

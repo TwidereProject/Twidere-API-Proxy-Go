@@ -17,8 +17,8 @@ func main() {
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 	host, port := os.Getenv("HOST"), os.Getenv("PORT")
 	var bind string
-	if host == "" || port == "" {
-		bind = fmt.Sprintf("%s:%s", "127.0.0.1", "18080")
+	if host == "" {
+		bind = fmt.Sprintf(":%s", port)
 	} else {
 		bind = fmt.Sprintf("%s:%s", host, port)
 	}

@@ -1,4 +1,4 @@
-# Twidere-API-Proxy-OpenShift
+# Twidere-API-Proxy-Go
 
 ----
 

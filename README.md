@@ -27,6 +27,14 @@ Deployment to heroku is a bit more complicated than OpenShift, but still easier 
 6. Find **Manual deploy**, click **Deploy Branch**.
 7. Done! Why deploy to heroku? I don't know. Just provide one more choice for you ;)
 
+
+###Any Linux box
+1. Clone the repo;
+2. Run ```go build apiproxy.go```;
+3. Run ```PORT=8080 ./apiproxy```;
+4. Done!
+5. You can use Apache or Nginx to act as a reverse proxy to enable TLS encryption.
+
 ##Support my work
 
 **Donation methods**

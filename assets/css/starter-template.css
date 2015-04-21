@@ -1,6 +1,16 @@
 body {
   padding-top: 50px;
 }
+
+.navbar-logo {
+  color: #fff;
+  float: right;
+  height: 50px;
+  padding: 12px 12px;
+  font-size: 24px;
+  line-height: 20px;
+}
+
 .starter-template {
   padding: 40px 15px;
   text-align: center;

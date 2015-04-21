@@ -26,3 +26,15 @@ Deployment to heroku is a bit more complicated than OpenShift, but still easier 
 5. Find **Connect to Github** in **Deploy** segment, gives Heroku your Github access, then type **the repo name that you've forked**, click **Connect**.
 6. Find **Manual deploy**, click **Deploy Branch**.
 7. Done! Why deploy to heroku? I don't know. Just provide one more choice for you ;)
+
+##Support my work
+
+**Donation methods**
+
+* Me: mariotaku.lee[AT]gmail.com
+
+* Our designer: pay[AT]uucky.me
+
+PayPal & Alipay accepted.
+
+Bitcoin: 1FHAVAzge7cj1LfCTMfnLL49DgA3mVUCuW

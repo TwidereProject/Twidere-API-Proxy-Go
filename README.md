@@ -28,7 +28,7 @@ Deployment to heroku is a bit more complicated than OpenShift, but still easier 
 7. Done! Why deploy to heroku? I don't know. Just provide one more choice for you ;)
 
 
-###Any Linux box
+###Any devices with Golang support
 1. Clone the repo;
 2. Run ```go build apiproxy.go```;
 3. Run ```PORT=8080 ./apiproxy```;

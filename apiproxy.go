@@ -48,7 +48,7 @@ func handleRequest(res http.ResponseWriter, req *http.Request) {
 }
 
 func handleTwitterRequest(res http.ResponseWriter, req *http.Request, domain string, uri string) {
-	client := http.Client{}
+	roundTripper := http.RoundTripper{}
 	var twitterUri string
 	if domain == "" {
 		twitterUri = fmt.Sprintf("https://twitter.com%s", uri)
@@ -70,7 +70,7 @@ func handleTwitterRequest(res http.ResponseWriter, req *http.Request, domain str
 		}
 		reqHeader.Add("Cookie", cookieToString(v))
 	}
-	twitterRes, err := client.Do(twitterReq)
+	twitterRes, err := roundTripper.RoundTrip(twitterReq)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return

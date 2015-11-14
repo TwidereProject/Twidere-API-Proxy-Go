@@ -31,4 +31,9 @@ _testmain.go
 .Trashes
 ehthumbs.db
 Thumbs.db
-Twidere-API-Proxy-OpenShift
+Twidere-API-Proxy-Go
+
+# IDE specific files
+
+/.idea
+*.iml

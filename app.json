@@ -1,0 +1,14 @@
+{
+  "name": "Twidere-API-Proxy-Go",
+  "description": "Yet another Twitter API proxy written in Go language",
+  "keywords": [
+    "twitter",
+    "api",
+    "proxy",
+    "go"
+  ],
+  "image": "heroku/go:latest",
+  "mount_dir": "src/github.com/TwidereProject/Twidere-API-Proxy-Go",
+  "website": "http://github.com/TwidereProject/Twidere-API-Proxy-Go",
+  "repository": "http://github.com/TwidereProject/Twidere-API-Proxy-Go"
+}

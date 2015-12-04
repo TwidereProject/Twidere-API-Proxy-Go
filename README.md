@@ -1,6 +1,8 @@
 # Twidere-API-Proxy-Go
 Yet another Twitter API proxy written in Go language
 
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 ----
 
 ##Deploy within one minute

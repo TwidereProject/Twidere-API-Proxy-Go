@@ -10,10 +10,13 @@ Yet another Twitter API proxy written in Go language
 ###OpenShift
 
 1. Create an application on OpenShift, Choose **Go Language**
-2. Copy URL of this repo
-3. Paste URL into **Source Code** in OpenShift configuration page
-4. Click **Create Application**
-5. Done! You don't need any code skill to deploy, yay!
+2. Click **Create Application**
+3. git clone your **openshift repo** to local
+4. git clone **this repo** to local
+5. move all files of this repo to the openshift repo
+6. delete web.go in openshift repo
+7. git push your openshift repo
+8. Done!
 
 
 ###Heroku

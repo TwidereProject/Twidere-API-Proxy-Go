@@ -4,10 +4,10 @@ Yet another Twitter API proxy written in Go language
 
 ----
 
-##Deploy within one minute
+## Deploy within one minute
 
 
-###OpenShift
+### OpenShift
 
 1. Create an application on OpenShift, Choose **Go Language**
 2. Copy URL of this repo
@@ -16,18 +16,18 @@ Yet another Twitter API proxy written in Go language
 5. Done! You don't need any code skill to deploy, yay!
 
 
-###Heroku
+### Heroku
 
 Just click [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy) to deploy **within seconds!**
 
-###Any devices with Golang support
+### Any devices with Golang support
 1. Clone the repo;
 2. Run ```go build apiproxy.go```;
 3. Run ```PORT=8080 ./apiproxy```;
 4. Done!
 5. You can use Apache or Nginx to act as a reverse proxy to enable TLS encryption.
 
-##Support my work
+## Support my work
 
 **Donation methods**
 
